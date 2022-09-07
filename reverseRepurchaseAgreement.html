@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReverseRepurchaseAgreement</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="datashow"></div>
+    <div id="container" style="height: 300%">
+    </div>
+    <div id="container2" style="height: 300%">
+    </div>
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var dom2 = document.getElementById('container2');
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+            title: {
+                text: 'economy'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['price-earings-radio', 'usdcny', 'reverse-repurchase-agreement', 'Direct', 'Search Engine']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: "value",
+                scale: true,
+                minInterval: 0,
+                splitNumber: 4
+            },
+            series: [
+                {
+                    name: 'reverse-repurchase-agreement',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [6.2, 6.3]
+                }
+            ]
+        };
+
+        new Vue({
+            el: '#datashow',
+            methods: {
+                getStudent() {
+                    axios({
+                        method: 'GET',
+                        url: 'http://localhost:1002/data/show/graph'
+                    }).then(response => {
+
+                        var value = response.data;
+                        var rra = [];
+                        for (let index = 0; index < value.usdcnies.length; index++) {
+                            const element = value.usdcnies[index];
+                            rra[index] = element.exchangeRate;
+                        }
+                        option.series[0].data = rra;
+                        console.info("====" + option.series[0].data)
+                        if (option && typeof option === 'object') {
+                            myChart.setOption(option);
+                        }
+                    })
+                },
+            },
+            mounted() {
+                this.getStudent();
+            }
+        })
+        window.addEventListener('resize', myChart.resize);
+    </script>
+</body>
+
+</html>
