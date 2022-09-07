@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+
+<body style="height: 300%; margin: 0">
+    <div id="datashow"></div>
+    <div id="container" style="height: 300%"></div>
+    <script type="text/javascript">
+        var dom = document.getElementById('container');
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+        option = {
+            title: {
+                text: "economy",
+                left: 'center',
+                top: 0
+            },
+            grid: [
+                { left: '7%', top: '7%', width: '38%', height: '38%' },
+                { right: '7%', top: '7%', width: '38%', height: '38%' },
+                { left: '7%', bottom: '7%', width: '38%', height: '38%' },
+                { right: '7%', bottom: '7%', width: '38%', height: '38%' }
+            ],
+            tooltip: {
+                formatter: 'Group {a}: ({c})'
+            },
+            xAxis: [
+                {
+                    gridIndex: 0, type: 'category',
+                    boundaryGap: false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                {
+                    gridIndex: 1, type: 'category',
+                    boundaryGap: false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                {
+                    gridIndex: 2, type: 'category',
+                    boundaryGap: false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                {
+                    gridIndex: 3, type: 'category',
+                    boundaryGap: false,
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                }
+            ],
+            yAxis: [
+                {
+                    gridIndex: 0, type: "value",
+                    scale: true,
+                    minInterval: 0,
+                    splitNumber: 4,
+                    min: 6, max: 8
+                },
+                {
+                    gridIndex: 1, type: "value",
+                    scale: true,
+                    minInterval: 0,
+                    splitNumber: 4,
+                    min: 6, max: 8
+                },
+                {
+                    gridIndex: 2, type: "value",
+                    scale: true,
+                    minInterval: 0,
+                    splitNumber: 4,
+                    min: 10, max: 40
+                },
+                { gridIndex: 3, min: 0, max: 15 }
+            ],
+            series: [
+                {
+                    name: 'reverse-repurchase-agreement',
+                    xAxisIndex: 0,
+                    yAxisIndex: 0,
+                    data: [6.2, 6.5],
+                    type: 'line'
+                    // stack: 'Total'
+                },
+                {
+                    name: 'usdcny',
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    data: [6.2, 6.9],
+                    type: 'line'
+                    // stack: 'Total1'
+                },
+                {
+                    name: 'price-earings-radio',
+                    xAxisIndex: 2,
+                    yAxisIndex: 2,
+                    data: [6.2, 6.95],
+                    type: 'line'
+                    // stack: 'Total2'
+                },
+                {
+                    name: 'IV',
+                    xAxisIndex: 3,
+                    yAxisIndex: 3,
+                    data: [6.2, 6.3],
+                    type: 'line'
+                    // stack: 'Total3'
+                }
+            ]
+        };
+
+        new Vue({
+            el: '#datashow',
+            methods: {
+                getStudent() {
+                    axios({
+                        method: 'GET',
+                        url: 'http://localhost:1002/data/show/graph'
+                    }).then(response => {
+
+                        var value = response.data;
+                        var rra = [];
+                        var per = [];
+                        for (let index = 0; index < value.usdcnies.length; index++) {
+                            const element = value.usdcnies[index];
+                            rra[index] = element.exchangeRate;
+                        }
+                        for (let index = 0; index < value.priceEarningsRatios.length; index++) {
+                            const element = value.priceEarningsRatios[index];
+                            per[index] = element.ratio;
+                        }
+                        option.series[0].data = rra;
+                        option.series[2].data = per;
+                        console.info("====" + option.series[0].data)
+                        if (option && typeof option === 'object') {
+                            myChart.setOption(option);
+                        }
+                    })
+                },
+            },
+            mounted() {
+                this.getStudent();
+            }
+        })
+
+        window.addEventListener('resize', myChart.resize);
+    </script>
+</body>
+
+</html>
