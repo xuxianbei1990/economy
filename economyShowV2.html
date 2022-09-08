@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>economy</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <style>
+        /* 多个div并行 */
+        .box {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="datashow"></div>
+    <div class="box">
+        <div id="rra" style="height: 300%; width: 50%;"></div>
+        <div id="per" style="height: 300%; width: 50%;"></div>
+    </div>
+
+
+    <script type="text/javascript">
+        var rraDom = document.getElementById('rra');
+        var perDom = document.getElementById('per');
+        var rraChart = echarts.init(rraDom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+        var perChart = echarts.init(perDom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+
+        var optionra;
+
+        optionra = {
+            title: {
+                text: 'reverse-repurchase-agreement'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            // legend: {
+            //     // top:20,
+            //     // data: ['reverse-repurchase-agreement']
+            // },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: "value",
+                scale: true,
+                minInterval: 0,
+                splitNumber: 4
+            },
+            series: [
+                {
+                    name: 'reverse-repurchase-agreement',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [6.2, 6.3]
+                }
+            ]
+        };
+
+        var optionPer;
+
+        optionPer = {
+            title: {
+                text: 'price-earings-radio'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            // legend: {
+            //     // data: ['price-earings-radio']
+            // },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: "value",
+                scale: true,
+                minInterval: 0,
+                splitNumber: 4
+            },
+            series: [
+                {
+                    name: 'price-earings-radio',
+                    type: 'line',
+                    stack: 'Total',
+                    data: [6.2, 6.3]
+                }
+            ]
+        };
+
+        new Vue({
+            el: '#datashow',
+            methods: {
+                getNumTwoBit(n) {
+                    n = Number(n);
+                    return (n > 9 ? '' : '0') + n;
+                },
+                timestampToDate(timestamp) {
+                    let date = new Date(timestamp);
+                    return date.getFullYear() + '-' + this.getNumTwoBit(date.getMonth() + 1) + '-' + this.getNumTwoBit(date.getDate());
+                },
+                getStudent() {
+                    axios({
+                        method: 'GET',
+                        url: 'http://localhost:1002/data/show/graph'
+                    }).then(response => {
+                        var value = response.data;
+                        for (let index = 0; index < value.usdcnies.length; index++) {
+                            const element = value.usdcnies[index];
+                            optionra.series[0].data[index] = element.exchangeRate;
+                            optionra.xAxis.data[index] = this.timestampToDate(element.createDate);
+                        }
+                        for (let index = 0; index < value.priceEarningsRatios.length; index++) {
+                            const element = value.priceEarningsRatios[index];
+                            optionPer.series[0].data[index] = element.ratio;
+                            optionPer.xAxis.data[index] = this.timestampToDate(element.createDate);
+                        }
+                        if (optionra && typeof optionra === 'object') {
+                            rraChart.setOption(optionra);
+                            perChart.setOption(optionPer)
+                        }
+                    })
+                },
+            },
+            mounted() {
+                this.getStudent();
+            }
+        })
+        window.addEventListener('resize', perChart.resize);
+        window.addEventListener('resize', rraChart.resize);
+    </script>
+</body>
+
+</html>
