@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <style>
         /* 多个div并行 */
         .box {
@@ -18,17 +20,41 @@
 </head>
 
 <body>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <div id="datashow"></div>
     <div class="box">
         <div id="rra" style="height: 300%; width: 50%;"></div>
         <div id="per" style="height: 300%; width: 50%;"></div>
+
+    </div>
+    <div id="reverse-repurchase-agreement">
+        <template>
+            <el-table :data="items" style="width: 100%">
+                <el-table-column prop="price" label="价格" width="180">
+                </el-table-column>
+                <el-table-column prop="priceUnit" label="单位" width="180">
+                </el-table-column>
+                <el-table-column prop="period" label="周期">
+                </el-table-column>
+                <el-table-column prop="periodUnit" label="周期单位">
+                </el-table-column>
+                <el-table-column prop="interestRate" label="汇率">
+                </el-table-column>
+                <el-table-column prop="createDate" label="日期">
+                </el-table-column>
+            </el-table>
+        </template>
     </div>
 
 
+
     <script type="text/javascript">
-        var rraDom = document.getElementById('rra');
+        var usdcnyDom = document.getElementById('rra');
         var perDom = document.getElementById('per');
-        var rraChart = echarts.init(rraDom, null, {
+        var usdcnyChart = echarts.init(usdcnyDom, null, {
             renderer: 'canvas',
             useDirtyRect: false
         });
@@ -43,7 +69,7 @@
 
         optionra = {
             title: {
-                text: 'reverse-repurchase-agreement'
+                text: 'USDCNY'
             },
             tooltip: {
                 trigger: 'axis'
@@ -76,7 +102,7 @@
             },
             series: [
                 {
-                    name: 'reverse-repurchase-agreement',
+                    name: 'USDCNY',
                     type: 'line',
                     stack: 'Total',
                     data: [6.2, 6.3]
@@ -128,7 +154,10 @@
             ]
         };
 
-        new Vue({
+        var itemsData = [];
+
+
+        var data = new Vue({
             el: '#datashow',
             methods: {
                 getNumTwoBit(n) {
@@ -150,13 +179,18 @@
                             optionra.series[0].data[index] = element.exchangeRate;
                             optionra.xAxis.data[index] = this.timestampToDate(element.createDate);
                         }
+                        for (let index = 0; index < value.reverseRepurchaseAgreements.length; index++) {
+                            const element = value.reverseRepurchaseAgreements[index];
+                            itemsData.push(element);
+                        }
+
                         for (let index = 0; index < value.priceEarningsRatios.length; index++) {
                             const element = value.priceEarningsRatios[index];
                             optionPer.series[0].data[index] = element.ratio;
                             optionPer.xAxis.data[index] = this.timestampToDate(element.createDate);
                         }
                         if (optionra && typeof optionra === 'object') {
-                            rraChart.setOption(optionra);
+                            usdcnyChart.setOption(optionra);
                             perChart.setOption(optionPer)
                         }
                     })
@@ -167,7 +201,15 @@
             }
         })
         window.addEventListener('resize', perChart.resize);
-        window.addEventListener('resize', rraChart.resize);
+        window.addEventListener('resize', usdcnyChart.resize);
+
+        new Vue({
+            el: '#reverse-repurchase-agreement',
+            data: {
+                items: itemsData
+            }
+        })
+
     </script>
 </body>
 
