@@ -31,6 +31,7 @@
 
     </div>
     <div id="reverse-repurchase-agreement">
+        <hr1>逆回购</hr1>
         <template>
             <el-table :data="items" style="width: 100%">
                 <el-table-column prop="price" label="价格" width="180">
@@ -47,7 +48,29 @@
                 </el-table-column>
             </el-table>
         </template>
+        <hr1>MLF</hr1>
+        <template>
+            <el-table :data="mlfitems" style="width: 100%">
+                <el-table-column prop="price" label="价格" width="80">
+                </el-table-column>
+                <el-table-column prop="subPrice" label="减少货币" width="80">
+                </el-table-column>
+                <el-table-column prop="addPrice" label="增加货币" width="80">
+                </el-table-column>
+                <el-table-column prop="priceUnit" label="单位" width="80">
+                </el-table-column>
+                <el-table-column prop="period" label="周期">
+                </el-table-column>
+                <el-table-column prop="periodUnit" label="周期单位">
+                </el-table-column>
+                <el-table-column prop="interestRate" label="汇率">
+                </el-table-column>
+                <el-table-column prop="createDate" label="日期">
+                </el-table-column>
+            </el-table>
+        </template>
     </div>
+
 
 
 
@@ -155,6 +178,7 @@
         };
 
         var itemsData = [];
+        var mlfItemsData = [];
 
 
         var data = new Vue({
@@ -179,9 +203,13 @@
                             optionra.series[0].data[index] = element.exchangeRate;
                             optionra.xAxis.data[index] = this.timestampToDate(element.createDate);
                         }
-                        for (let index = 0; index < value.reverseRepurchaseAgreements.length; index++) {
-                            const element = value.reverseRepurchaseAgreements[index];
+                        for (let index = 0; index < value.reverseRepurchaseAgreements.records.length; index++) {
+                            const element = value.reverseRepurchaseAgreements.records[index];
                             itemsData.push(element);
+                        }
+                        for (let index = 0; index < value.mediumtermLendingFacilities.length; index++) {
+                            const element = value.mediumtermLendingFacilities[index];
+                            mlfItemsData.push(element);
                         }
 
                         for (let index = 0; index < value.priceEarningsRatios.length; index++) {
@@ -206,7 +234,8 @@
         new Vue({
             el: '#reverse-repurchase-agreement',
             data: {
-                items: itemsData
+                items: itemsData,
+                mlfitems: mlfItemsData
             }
         })
 
