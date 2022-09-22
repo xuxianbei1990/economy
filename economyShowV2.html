@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script src="https://unpkg.com/element-ui@2.15.7/lib/index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <style>
@@ -25,18 +27,35 @@
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <div id="datashow"></div>
+    <div id="propose">
+        <el-button type="text" @click="dialogVisible = true">建议</el-button>
+        <el-dialog title="建议" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <!-- <span>建议内容</span> -->
+            <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
+
     <div class="box">
         <div id="rra" style="height: 300%; width: 50%;"></div>
         <div id="per" style="height: 300%; width: 50%;"></div>
-
     </div>
+
+
     <div id="reverse-repurchase-agreement">
         <hr1>逆回购</hr1>
         <template>
             <el-table :data="items" style="width: 100%">
-                <el-table-column prop="price" label="价格" width="180">
+                <el-table-column prop="price" label="价格" width="80">
                 </el-table-column>
-                <el-table-column prop="priceUnit" label="单位" width="180">
+                <el-table-column prop="subPrice" label="减少货币" width="80">
+                </el-table-column>
+                <el-table-column prop="addPrice" label="增加货币" width="80">
+                </el-table-column>
+                <el-table-column prop="priceUnit" label="单位" width="80">
                 </el-table-column>
                 <el-table-column prop="period" label="周期">
                 </el-table-column>
@@ -70,10 +89,27 @@
             </el-table>
         </template>
     </div>
-
-
-
-
+    <script>
+        var Main = {
+            data() {
+                return {
+                    dialogVisible: false,
+                    textarea: ''
+                };
+            }
+            // methods: {
+            //     handleClose(done) {
+            //         this.$confirm('确认关闭？')
+            //             .then(_ => {
+            //                 done();
+            //             })
+            //             .catch(_ => { });
+            //     }
+            // }
+        };
+        var Ctor = Vue.extend(Main)
+        new Ctor().$mount('#propose')
+    </script>
     <script type="text/javascript">
         var usdcnyDom = document.getElementById('rra');
         var perDom = document.getElementById('per');
