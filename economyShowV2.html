@@ -23,15 +23,17 @@
 
 <body>
     <!-- import Vue before Element -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <div id="datashow"></div>
-    <div id="propose">
+    <div id="proposeJS">
         <el-button type="text" @click="dialogVisible = true">建议</el-button>
-        <el-dialog title="建议" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+        <el-dialog title="建设银行建议" :visible.sync="dialogVisible" width="50%">
+            <el-button type="text" @click="setM">建议</el-button>
             <!-- <span>建议内容</span> -->
-            <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea">
+            <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textareavalue">
+
             </el-input>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -67,7 +69,7 @@
                 </el-table-column>
             </el-table>
         </template>
-        <hr1>MLF</hr1>
+        <hr2>MLF</hr2>
         <template>
             <el-table :data="mlfitems" style="width: 100%">
                 <el-table-column prop="price" label="价格" width="80">
@@ -89,27 +91,6 @@
             </el-table>
         </template>
     </div>
-    <script>
-        var Main = {
-            data() {
-                return {
-                    dialogVisible: false,
-                    textarea: ''
-                };
-            }
-            // methods: {
-            //     handleClose(done) {
-            //         this.$confirm('确认关闭？')
-            //             .then(_ => {
-            //                 done();
-            //             })
-            //             .catch(_ => { });
-            //     }
-            // }
-        };
-        var Ctor = Vue.extend(Main)
-        new Ctor().$mount('#propose')
-    </script>
     <script type="text/javascript">
         var usdcnyDom = document.getElementById('rra');
         var perDom = document.getElementById('per');
@@ -215,7 +196,20 @@
 
         var itemsData = [];
         var mlfItemsData = [];
+        var jsPropose;
 
+        var textareaVue = new Vue({
+            el: '#proposeJS',
+            data: {
+                dialogVisible: false,
+                textareavalue: ""
+            },
+            methods: {
+                setM(value) {
+                    this.textareavalue = value;
+                }
+            }
+        })
 
         var data = new Vue({
             el: '#datashow',
@@ -234,6 +228,7 @@
                         url: 'http://localhost:1002/data/show/graph'
                     }).then(response => {
                         var value = response.data;
+                        textareaVue.setM(value.proposes[0].remark);
                         for (let index = 0; index < value.usdcnies.length; index++) {
                             const element = value.usdcnies[index];
                             optionra.series[0].data[index] = element.exchangeRate;
@@ -257,6 +252,7 @@
                             usdcnyChart.setOption(optionra);
                             perChart.setOption(optionPer)
                         }
+                        console.log(jsPropose)
                     })
                 },
             },
@@ -274,6 +270,8 @@
                 mlfitems: mlfItemsData
             }
         })
+
+
 
     </script>
 </body>
