@@ -28,7 +28,7 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <div id="datashow"></div>
     <div id="proposeJS">
-        <el-button type="text" @click="dialogVisible = true">建议</el-button>
+        <el-button type="primary" @click="dialogVisible = true">建议</el-button>
         <el-dialog title="建设银行建议" :visible.sync="dialogVisible" width="50%">
             <el-button type="text" @click="setM">建议</el-button>
             <!-- <span>建议内容</span> -->
@@ -39,6 +39,7 @@
                 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
         </el-dialog>
+        <el-button type="primary" @click="touzid">参考</el-button>
     </div>
 
     <div class="box">
@@ -207,6 +208,9 @@
             methods: {
                 setM(value) {
                     this.textareavalue = value;
+                },
+                touzid(){
+                    window.open('https://www.touzid.com/model/graham.html#/', '_blank')
                 }
             }
         })
