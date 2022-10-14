@@ -30,7 +30,11 @@
     <div id="proposeJS">
         <el-button type="primary" @click="dialogVisible = true">建议</el-button>
         <el-dialog title="建设银行建议" :visible.sync="dialogVisible" width="50%">
-            <el-button type="text" @click="setM">建议</el-button>
+            <el-button type="text" @click="setJS">建设银行</el-button>
+            <el-button type="text" @click="setICBC">ICBC银行</el-button>
+            <el-button type="text" @click="setPER">市盈率</el-button>
+            <el-button type="text" @click="setExchangeRate">汇率</el-button>
+            <el-button type="text" @click="set600036">招商银行</el-button>
             <!-- <span>建议内容</span> -->
             <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textareavalue">
 
@@ -41,6 +45,7 @@
         </el-dialog>
         <el-button type="primary" @click="touzid">参考</el-button>
         <el-button type="primary" @click="chuangye50">创业50</el-button>
+        <el-button type="primary" @click="hushen300">沪深300</el-button>
     </div>
 
     <div class="box">
@@ -198,6 +203,7 @@
 
         var itemsData = [];
         var mlfItemsData = [];
+        var proposes = [];
         var jsPropose;
 
         var textareaVue = new Vue({
@@ -210,11 +216,29 @@
                 setM(value) {
                     this.textareavalue = value;
                 },
-                touzid(){
+                setJS() {
+                    this.textareavalue = proposes[0].remark;
+                },
+                setICBC() {
+                    this.textareavalue = proposes[1].remark;
+                },
+                setPER() {
+                    this.textareavalue = proposes[2].remark;
+                },
+                setExchangeRate(){
+                    this.textareavalue = proposes[3].remark;
+                },
+                set600036() {
+                    this.textareavalue = proposes[4].remark;
+                },
+                touzid() {
                     window.open('https://www.touzid.com/model/graham.html#/', '_blank')
                 },
-                chuangye50(){
+                chuangye50() {
                     window.open('https://legulegu.com/stockdata/sz399673-ttm-lyr', '_blank')
+                },
+                hushen300() {
+                    window.open('https://legulegu.com/stockdata/marketcap-gdp', '_blank')
                 }
             }
         })
@@ -237,6 +261,7 @@
                     }).then(response => {
                         var value = response.data;
                         textareaVue.setM(value.proposes[0].remark);
+                        proposes = value.proposes;
                         for (let index = 0; index < value.usdcnies.length; index++) {
                             const element = value.usdcnies[index];
                             optionra.series[0].data[index] = element.exchangeRate;
