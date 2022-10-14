@@ -35,6 +35,8 @@
             <el-button type="text" @click="setPER">市盈率</el-button>
             <el-button type="text" @click="setExchangeRate">汇率</el-button>
             <el-button type="text" @click="set600036">招商银行</el-button>
+            <el-button type="text" @click="setGraham">格雷厄姆指数</el-button>
+            <el-button type="text" @click="setSynthesis">综合指数</el-button>
             <!-- <span>建议内容</span> -->
             <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textareavalue">
 
@@ -46,6 +48,7 @@
         <el-button type="primary" @click="touzid">参考</el-button>
         <el-button type="primary" @click="chuangye50">创业50</el-button>
         <el-button type="primary" @click="hushen300">沪深300</el-button>
+
     </div>
 
     <div class="box">
@@ -230,6 +233,12 @@
                 },
                 set600036() {
                     this.textareavalue = proposes[4].remark;
+                },
+                setGraham() {
+                    this.textareavalue = proposes[5].remark;
+                },
+                setSynthesis() {
+                    this.textareavalue = proposes[6].remark;
                 },
                 touzid() {
                     window.open('https://www.touzid.com/model/graham.html#/', '_blank')
