@@ -18,6 +18,23 @@
         .box {
             display: flex;
         }
+
+        .bg-purple-light {
+            background: #e5e9f2;
+        }
+
+        .grid-content {
+            border-radius: 4px;
+            min-height: 36px;
+        }
+
+        .bg-purple {
+            background: #d3dce6;
+        }
+
+        .el-col {
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -28,28 +45,51 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <div id="datashow"></div>
     <div id="proposeJS">
-        <el-button type="primary" @click="dialogVisible = true">建议</el-button>
-        <el-dialog title="建设银行建议" :visible.sync="dialogVisible" width="50%">
-            <el-button type="text" @click="setJS">建设银行</el-button>
-            <el-button type="text" @click="setICBC">ICBC银行</el-button>
-            <el-button type="text" @click="setPER">市盈率</el-button>
-            <el-button type="text" @click="setExchangeRate">汇率</el-button>
-            <el-button type="text" @click="set600036">招商银行</el-button>
-            <el-button type="text" @click="setGraham">格雷厄姆指数</el-button>
-            <el-button type="text" @click="setSynthesis">综合指数</el-button>
-            <!-- <span>建议内容</span> -->
-            <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textareavalue">
+        <el-row>
+            <el-button type="primary" @click="dialogVisible = true">建议</el-button>
+            <el-dialog title="建设银行建议" :visible.sync="dialogVisible" width="50%">
+                <el-button type="text" @click="setJS">建设银行</el-button>
+                <el-button type="text" @click="setICBC">ICBC银行</el-button>
+                <el-button type="text" @click="setPER">市盈率</el-button>
+                <el-button type="text" @click="setExchangeRate">汇率</el-button>
+                <el-button type="text" @click="set600036">招商银行</el-button>
+                <el-button type="text" @click="setGraham">格雷厄姆指数</el-button>
+                <el-button type="text" @click="setSynthesis">综合指数</el-button>
+                <!-- <span>建议内容</span> -->
+                <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="textareavalue">
 
-            </el-input>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-        </el-dialog>
-        <el-button type="primary" @click="touzid">参考</el-button>
-        <el-button type="primary" @click="chuangye50">创业50</el-button>
-        <el-button type="primary" @click="hushen300">沪深300</el-button>
+                </el-input>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                </span>
+            </el-dialog>
+            <el-button type="primary" @click="touzid">付费参考</el-button>
 
+            <el-col :span="1.8">
+                <div class="grid-content bg-purple">
+                    <el-button type="primary" @click="chuangye50">创业50</el-button>
+                </div>
+            </el-col>
+            <el-col :span="1">
+                <div class="grid-content bg-purple-light">
+                    <el-input size="mini"  placeholder="请输入内容"></el-input>
+                    <el-input size="mini" v-model="input" placeholder="请输入内容"></el-input>
+                </div>
+            </el-col>
+            <el-col :span="1.8">
+                <div class="grid-content bg-purple">
+                    <el-button type="primary" @click="hushen300">沪深300</el-button>
+                </div>
+            </el-col>
+
+            <el-col :span="1">
+                <div class="grid-content bg-purple-light">
+                    <el-input size="mini" v-model="input" placeholder="请输入内容"></el-input>
+                </div>
+            </el-col>
+        </el-row>
     </div>
+
 
     <div class="box">
         <div id="rra" style="height: 300%; width: 50%;"></div>
@@ -228,7 +268,7 @@
                 setPER() {
                     this.textareavalue = proposes[2].remark;
                 },
-                setExchangeRate(){
+                setExchangeRate() {
                     this.textareavalue = proposes[3].remark;
                 },
                 set600036() {
