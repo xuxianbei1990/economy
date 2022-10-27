@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui@2.15.7/lib/index.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>国家福利</title>
+</head>
+
+<body>
+    <div id="countryMaterialBenefits">
+        <el-row>
+            <el-col>
+                <el-button type="primary" @click="lifeLongEducationPlatform">国家终身教育平台</el-button>
+                <!-- 账号：15158133931 密码：1qaz1QAZ -->
+                <el-button type="primary" @click="enterpriseInformation">国家企业信息公示系统</el-button>
+                <el-button type="primary" @click="smartedu">国家中小学智慧教育平台</el-button>
+                <el-button type="primary" @click="docuchina">中国纪录片</el-button>
+                <el-button type="primary" @click="nmpa">国家药监局</el-button>
+                <el-button type="primary" @click="gov12348">中国法律服务网</el-button>
+            </el-col>
+        </el-row>
+    </div>
+    <script>
+        new Vue({
+            el: '#countryMaterialBenefits',
+            data: {
+            },
+            methods: {
+                lifeLongEducationPlatform() {
+                    window.open('https://le.ouchn.cn/home', '_blank')
+                },
+                enterpriseInformation() {
+                    window.open('https://www.gsxt.gov.cn/corp-query-homepage.html', '_blank')
+                },
+                smartedu() {
+                    window.open('https://basic.smartedu.cn/syncClassroom', '_blank')
+                },
+                docuchina() {
+                    window.open('http://www.docuchina.cn/', '_blank')
+                },
+                nmpa(){
+                    window.open('https://www.nmpa.gov.cn/', '_blank')
+                },
+                gov12348(){
+                    window.open('http://www.12348.gov.cn/#/homepage', '_blank')
+                }
+            
+            }
+        })
+    </script>
+</body>
+
+</html>
