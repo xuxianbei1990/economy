@@ -70,8 +70,9 @@
                     <el-button type="primary" size="mini" @click="queryData">确定</el-button>
                 </div>
             </el-col>
-            <el-col :span="1">
+            <el-col :span="2">
                 <div class="grid-content bg-purple-light">
+                    <el-input size="mini" v-model="cyNow" placeholder="现在"></el-input>
                     <el-input size="mini" v-model="cyHeight" placeholder="高于"></el-input>
                     <el-input size="mini" v-model="cyLow" placeholder="低于"></el-input>
                 </div>
@@ -82,8 +83,9 @@
                     <el-button type="primary" size="mini" @click="queryData">确定</el-button>
                 </div>
             </el-col>
-            <el-col :span="1">
+            <el-col :span="2">
                 <div class="grid-content bg-purple-light">
+                    <el-input size="mini" v-model="hushenNow" placeholder="现在"></el-input>
                     <el-input size="mini" v-model="heightIndex" placeholder="高于"></el-input>
                     <el-input size="mini" v-model="lowIndex" placeholder="低于"></el-input>
                 </div>
@@ -94,13 +96,14 @@
                     <el-button type="primary" size="mini" @click="queryDataGraham">确定</el-button>
                 </div>
             </el-col>
-            <el-col :span="1">
+            <el-col :span="2">
                 <div class="grid-content bg-purple-light">
+                    <el-input size="mini" v-model="szNow" placeholder="现在"></el-input>
                     <el-input size="mini" v-model="szHeight" placeholder="高于"></el-input>
                     <el-input size="mini" v-model="szLow" placeholder="低于"></el-input>
                 </div>
             </el-col>
-            <el-button type="primary"  @click="countryMaterialBenefits">国家福利</el-button>
+            <el-button type="primary" @click="countryMaterialBenefits">国家福利</el-button>
         </el-row>
     </div>
 
@@ -268,14 +271,20 @@
             data: {
                 dialogVisible: false,
                 textareavalue: "",
+                hushen300: "",
                 heightIndex: "",
                 lowIndex: "",
+                cyNow: "",
                 cyHeight: "",
                 cyLow: "",
                 szHeight: "",
-                szLow: ""
+                szLow: "",
+                szNow: ""
             },
             methods: {
+                setSzNow(value) {
+                    this.szNow = value;
+                },
                 setM(value) {
                     this.textareavalue = value;
                 },
@@ -300,7 +309,7 @@
                 setSynthesis() {
                     this.textareavalue = proposes[6].remark;
                 },
-                countryMaterialBenefits(){
+                countryMaterialBenefits() {
                     window.open('countryMaterialBenefits.html', '_blank')
                 },
                 touzid() {
@@ -309,7 +318,7 @@
                 chuangye50() {
                     window.open('https://legulegu.com/stockdata/sz399673-ttm-lyr', '_blank')
                 },
-                shangzheng50(){
+                shangzheng50() {
                     window.open('https://legulegu.com/stockdata/sz50-ttm-lyr', '_blank')
                 },
                 hushen300() {
@@ -368,6 +377,7 @@
                     }).then(response => {
                         var value = response.data;
                         textareaVue.setM(value.proposes[0].remark);
+                        textareaVue.setSzNow(value.grahamIndex.ratio)
                         proposes = value.proposes;
                         for (let index = 0; index < value.usdcnies.length; index++) {
                             const element = value.usdcnies[index];

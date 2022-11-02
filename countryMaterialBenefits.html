@@ -28,9 +28,22 @@
         </el-row>
     </div>
     <script>
+        Vue.prototype.globalClick = function (callback) {
+            document.getElementById('countryMaterialBenefits').onclick = function ($event) {
+                console.log($event.srcElement.innerText)
+            };
+        };
+
         new Vue({
             el: '#countryMaterialBenefits',
             data: {
+            },
+            mounted: function () {
+                this.globalClick(this.moreSetupMenuRemove);
+            },
+            // 移除操作
+            moreSetupMenuRemove() {
+                this.$refs.moreSetupMenu.style.display = 'none';
             },
             methods: {
                 lifeLongEducationPlatform() {
@@ -45,13 +58,12 @@
                 docuchina() {
                     window.open('http://www.docuchina.cn/', '_blank')
                 },
-                nmpa(){
+                nmpa() {
                     window.open('https://www.nmpa.gov.cn/', '_blank')
                 },
-                gov12348(){
+                gov12348() {
                     window.open('http://www.12348.gov.cn/#/homepage', '_blank')
                 }
-            
             }
         })
     </script>
