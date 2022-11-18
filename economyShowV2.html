@@ -60,7 +60,7 @@
 
                 </el-input>
                 <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                    <el-button type="primary" @click="dialogSure">确 定</el-button>
                 </span>
             </el-dialog>
             <el-button type="primary" @click="touzid">付费参考</el-button>
@@ -104,6 +104,7 @@
                 </div>
             </el-col>
             <el-button type="primary" @click="countryMaterialBenefits">国家福利</el-button>
+            <el-button type="primary" @click="AmericanReverseRepo">美国逆回购</el-button>
         </el-row>
     </div>
 
@@ -279,7 +280,6 @@
             data: {
                 dialogVisible: false,
                 textareavalue: "",
-                hushen300: "",
                 heightIndex: "",
                 lowIndex: "",
                 cyNow: "",
@@ -287,38 +287,51 @@
                 cyLow: "",
                 szHeight: "",
                 szLow: "",
-                szNow: ""
+                szNow: "",
+                hushenNow: "",
+                btnIndex: 0
             },
             methods: {
                 setSzNow(value) {
                     this.szNow = value;
                 },
                 setM(value) {
+                    this.btnIndex = -1;
                     this.textareavalue = value;
                 },
                 setJS() {
+                    this.btnIndex = 0;
                     this.textareavalue = proposes[0].remark;
                 },
                 setICBC() {
+                    this.btnIndex = 1;
                     this.textareavalue = proposes[1].remark;
                 },
                 setPER() {
+                    this.btnIndex = 2;
                     this.textareavalue = proposes[2].remark;
                 },
                 setExchangeRate() {
+                    this.btnIndex = 3;
                     this.textareavalue = proposes[3].remark;
                 },
                 set600036() {
+                    this.btnIndex = 4;
                     this.textareavalue = proposes[4].remark;
                 },
                 setGraham() {
+                    this.btnIndex = 5;
                     this.textareavalue = proposes[5].remark;
                 },
                 setSynthesis() {
                     this.textareavalue = proposes[6].remark;
+                    this.btnIndex = 6;
                 },
                 countryMaterialBenefits() {
                     window.open('countryMaterialBenefits.html', '_blank')
+                },
+                AmericanReverseRepo() {
+                    window.open('https://www.newyorkfed.org/markets/desk-operations/reverse-repo#recent-operations', '_blank')
                 },
                 touzid() {
                     window.open('https://www.touzid.com/model/graham.html#/', '_blank')
@@ -332,17 +345,36 @@
                 hushen300() {
                     window.open('https://legulegu.com/stockdata/marketcap-gdp', '_blank')
                 },
+                dialogSure() {
+                    if (this.btnIndex != -1) {
+                        this.updatePropose();
+                    }
+                    this.dialogVisible = false
+                },
                 open(value) {
                     this.$alert(value, '标题名称', {
                         confirmButtonText: '确定',
-                        dangerouslyUseHTMLString: true
                         // callback: action => {
+                        //     console.log("1111")
                         //     this.$message({
                         //         type: 'info',
                         //         message: `action: ${action}`
                         //     });
-                        // }
+                        // },
+                        dangerouslyUseHTMLString: true
                     });
+                },
+                updatePropose() {
+                    proposes[this.btnIndex].remark = this.textareavalue;
+                    //关闭乐观锁
+                    proposes[this.btnIndex].version = null;
+                    axios({
+                        method: 'POST',
+                        data: proposes[this.btnIndex],
+                        url: 'http://localhost:1002/data/collect/upate/propose'
+                    }).then(response => {
+                        console.log(response);
+                    })
                 },
                 queryData() {
                     axios({
