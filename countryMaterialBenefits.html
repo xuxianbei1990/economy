@@ -24,6 +24,8 @@
                 <el-button type="primary" @click="docuchina">中国纪录片</el-button>
                 <el-button type="primary" @click="nmpa">国家药监局</el-button>
                 <el-button type="primary" @click="gov12348">中国法律服务网</el-button>
+                <el-button type="primary" @click="gov12333">国家社会保险公共服务平台</el-button>
+                
             </el-col>
         </el-row>
     </div>
@@ -63,6 +65,9 @@
                 },
                 gov12348() {
                     window.open('http://www.12348.gov.cn/#/homepage', '_blank')
+                },
+                gov12333() {
+                    window.open('http://si.12333.gov.cn/index.jhtml?ret_url=http%3A%2F%2Fsi.12333.gov.cn%3A80%2F', '_blank')
                 }
             }
         })
