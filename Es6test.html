@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        import {User} from './js/User.js'
+        console.info(User);
+    </script>
+
+    <script>
+        let name = "sky"
+        let age = 18
+        let hobbys = "change"
+        function fun() {
+            return "函数"
+        }
+        function default1(a = 1) {
+            console.info(a)
+        }
+        default1()
+        console.info(`姓名： ${name} 年龄：${age} 爱好:${hobbys} 函数：${fun()}`)
+
+        let persion = {
+            name: "sky1",
+            age: 19,
+            hobbys: "future"
+        }
+
+        console.info(Object.keys(persion))
+        console.info(Object.values(persion))
+        console.info(Object.entries(persion))
+
+
+        let a = {
+            name: "sky2",
+            eat(food) {
+                console.info(a.name + "eat" + food)
+            }
+        }
+
+        let b = {
+            age: 20
+        }
+
+        let c = {
+            hobbys: "change1"
+        }
+
+        Object.assign(a, b, c)
+        console.info(a)
+        a.eat("米饭")
+
+        let persion1 = { ...persion }
+        persion1.name = "sky10"
+        console.info(persion1)
+        console.info(persion)
+
+
+        //promise
+        // myAjax("url1").then(result => {
+        //     if (result.data) {
+        //         alert("提示1");
+        //         return myAjax("url2")
+        //     } else {
+        //         alert("提示2")
+        //     }
+        // }).then(result => {
+        //     if (result.data) {
+        //         alert("提示3");
+        //     }
+        // }).catch(err=> {
+        //     alert("异常提示")
+        // })
+
+        // function myAjax(url) {
+        //     return new Promise((resolve, reject) => {
+        //         $.ajax({
+        //             url,
+        //             success: (result) => {
+        //                 resolve(result)
+        //             },
+        //             error: (err) => {
+        //                 reject(err)
+        //             }
+        //         })
+        //     })
+        // }
+
+    </script>
+</body>
+
+</html>
