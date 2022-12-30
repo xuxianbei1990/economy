@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+
+    <div id="app">
+        <h1>{{name}}</h1>
+        <router-link to="/Index">Index</router-link>
+        <router-link to="/product">product</router-link>
+        <router-view></router-view>
+    </div>
+
+    
+
+    <script>
+        let index = Vue.component("index", {
+            template: `<div>hello Index</div>`
+        });
+        let product = Vue.component("product", {
+            template: `<div>hello product</div>`
+        })
+
+        const router = new VueRouter({
+            routes: [
+                { path: "/Index", component: index },
+                { path: "/product", component: product }
+            ]
+        });
+
+        new Vue({
+            el: "#app",
+            data: {
+                name: new Date().toLocaleDateString()
+            },
+            router
+        })
+    </script>
+
+</body>
+
+</html>

@@ -25,20 +25,44 @@
                 <el-button type="primary" @click="nmpa">国家药监局</el-button>
                 <el-button type="primary" @click="gov12348">中国法律服务网</el-button>
                 <el-button type="primary" @click="gov12333">国家社会保险公共服务平台</el-button>
-                
             </el-col>
         </el-row>
+        <el-input v-model:value="num1"></el-input>
+        <el-li>"计算属性:" {{calcNum}}</el-li>
+        <el-li>"侦听器："{{message}}</el-li>
+        <el-li>"过滤器："{{num1 | filterNum}}</el-li>
+        <xushu :num="numOut"></xushu>
     </div>
     <script>
         Vue.prototype.globalClick = function (callback) {
-            document.getElementById('countryMaterialBenefits').onclick = function ($event) {
-                console.log($event.srcElement.innerText)
-            };
+            let click = document.getElementById('countryMaterialBenefits');
+            if (click != null) {
+                click.onclick = function ($event) {
+                    console.log($event.srcElement.innerText)
+                };
+            }
+
         };
+
+        Vue.component("xushu", {
+            template: `<div @click='num++'>{{num}}</div>`,
+            // data() {
+            //     return {
+            //         num: 10
+            //     }
+            // },
+            //从外部传入
+            props: ["num"]
+        })
+
 
         new Vue({
             el: '#countryMaterialBenefits',
             data: {
+                num1: 1,
+                num2: 2,
+                message: 0,
+                numOut: 3
             },
             mounted: function () {
                 this.globalClick(this.moreSetupMenuRemove);
@@ -69,7 +93,52 @@
                 gov12333() {
                     window.open('http://si.12333.gov.cn/index.jhtml?ret_url=http%3A%2F%2Fsi.12333.gov.cn%3A80%2F', '_blank')
                 }
-            }
+            },
+            computed: {
+                // 计算属性 如果定义了方法，那么调用时候，如果方法里的值发生了变化，计算方法自动执行
+                calcNum() {
+                    return this.num1 * this.num2
+                }
+            },
+            //监听器、侦听器
+            watch: {
+                //需要监听的属性
+                num1: {
+                    handler(newValue, oldValue) {
+                        this.message = this.num1 * this.num2
+                    },
+                    // deep: true //如果是数组，对象之类，就需要这个
+                }
+
+            },
+            //过滤器
+            filters: {
+                filterNum(num) {
+                    if (num == 1) {
+                        return "男"
+                    } else {
+                        return "女"
+                    }
+                }
+            },
+            beforeCreate() {
+              console.info("创建前")  
+            },
+            created() {
+                console.info("创建")
+            },
+            beforeMount() {
+                console.info("数据绑定前")
+            },
+            mounted(){
+                console.info("数据绑定后")
+            },
+            beforeUpdate() {
+                console.info("数据更新前")
+            },
+            updated() {
+                console.info("数据更新后")
+            },
         })
     </script>
 </body>
